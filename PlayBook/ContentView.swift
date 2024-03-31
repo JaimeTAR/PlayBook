@@ -436,12 +436,37 @@ struct ContentView: View {
 struct Reserva: View {
     @Environment(\.dismiss) var dismiss
     @State private var ubicacion: String = ""
-    @State private var deporte: String = ""
+    @State private var deporte: String = "Pádel"
     @State private var date = Date()
     
-    let deportes = ["Pádel", "Tennis", "Fútbol", "Básquetbol"]
+    let deportes = ["Pádel", "Tennis", "Fútbol", "Basquetbol"]
     
-    let padel = [["puntaco","Puntaco", "550"], ["pickle","Padel & Pickle GM Bugambilias", "320"], ["factory","Padel Factory Sur", "380"]]
+    @State var todo =
+    ["Pádel" : [
+        ["padel1","Puntaco", "550"],
+        ["padel2","Padel & Pickle GM Bugambilias", "320"],
+        ["padel3","Padel Factory Sur", "380"],
+        ["padel4","Padel Spot Network", "390"]
+               ],
+     "Tennis" :[
+        ["tennis1","Cancha 1", "120"],
+        ["tennis2","Cancha 2", "150"],
+        ["tennis3","Cancha 3", "130"],
+        ["tennis4","Cancha 4", "180"]
+               ],
+     "Basquetbol" :[
+        ["basquet1","Cancha 1", "800"],
+        ["basquet2","Cancha 2", "920"],
+        ["basquet3","Cancha 3", "720"],
+        ["basquet4","Cancha 4", "800"]
+                   ],
+     "Fútbol" :[
+        ["fut1","Cancha 1", "1300"],
+        ["fut2","Cancha 2", "1290"],
+        ["fut3","Cancha 3", "999"],
+        ["fut4","Cancha 4", "1520"]
+               ]
+    ]
     
     var body: some View {
         VStack(spacing: 0){
@@ -456,6 +481,7 @@ struct Reserva: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width:10)
+                                    .tint(.black)
                             }
                             .padding(.horizontal)
                             Spacer()
@@ -515,22 +541,14 @@ struct Reserva: View {
                 .padding(.horizontal)
             }
             Spacer()
-            ScrollView(.vertical){
-                VStack(spacing: 20) {
-                    ForEach(padel, id: \.self){item in
-                        ExtractedView(item: item)
-                    }
-                }
-                .padding(.top, 20)
-            }
-            .frame(minWidth: 400)
-            .background(.gray.opacity(0.3))
+            
+            AllSpots(infoDeportes: todo[deporte]!)
         }
         .navigationBarBackButtonHidden(true)
     }
 }
 
-struct ExtractedView: View {
+struct Spot: View {
     
     var item:[String]
     
@@ -538,75 +556,124 @@ struct ExtractedView: View {
     @State var icon:String = "heart"
     
     var body: some View {
-        VStack(spacing: 0) {
-            ZStack{
-                Image(item[0])
-                    .resizable()
-                    .frame(width: 400, height: 250)
-                Rectangle()
-                    .fill(LinearGradient(gradient: Gradient(colors: [.clear, .clear, .black]), startPoint: .top, endPoint: .bottom))
-                VStack{
-                    HStack{
-                        Spacer()
-                        Button(action:{
-                            if icon == "heart" {
-                                icon = "heart.fill"
-                            } else {
-                                icon = "heart"
-                            }
-                            
-                        }){
-                            Image(systemName: icon)
+        NavigationStack{
+                VStack(spacing: 0) {
+                    NavigationLink(destination: {SpotEspecifico(infoDeportes: item)}){
+                        ZStack{
+                            Image(item[0])
                                 .resizable()
-                                .scaledToFit()
-                                .frame(width: 30)
-                                .padding()
-                                .padding(.top, 10)
-                                .padding(.trailing, 10)
+                                .frame(width: 400, height: 250)
+                            Rectangle()
+                                .fill(LinearGradient(gradient: Gradient(colors: [.clear, .clear, .black]), startPoint: .top, endPoint: .bottom))
+                            VStack{
+                                HStack{
+                                    Spacer()
+                                    Button(action:{
+                                        if icon == "heart" {
+                                            icon = "heart.fill"
+                                        } else {
+                                            icon = "heart"
+                                        }
+                                        
+                                    }){
+                                        Image(systemName: icon)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 30)
+                                            .padding()
+                                            .padding(.top, 10)
+                                            .padding(.trailing, 10)
+                                            .foregroundStyle(.white)
+                                    }
+                                    
+                                }
+                                Spacer()
+                                .padding(.horizontal)
                                 .foregroundStyle(.white)
+                                HStack(){
+                                    Text(item[1])
+                                    Spacer()
+                                    VStack{
+                                        Text("1h desde")
+                                            .font(.caption)
+                                        Text("MX$\(item[2])")
+                                    }
+                                }
+                                .font(.title)
+                                .foregroundStyle(.white)
+                                .bold()
+                                .padding(.horizontal)
+                                .padding(.bottom, 15)
+                                
+                            }
                         }
-                        
+                        .frame(minWidth: 400, minHeight: 250)
                     }
-                    Spacer()
-                    HStack{
-                        Spacer()
-                        Text("1h desde")
+                    ScrollView(.horizontal){
+                        HStack(spacing: 15){
+                            ForEach(counter, id:\.self){item in
+                                NavigationLink(destination: {SpotEspecifico(infoDeportes: self.item)}){
+                                    Text("\(item):00")
+                                        .padding()
+                                        .padding(.horizontal, 10)
+                                        .background(.white)
+                                        .border(.gray)
+                                }
+                                NavigationLink(destination: {SpotEspecifico(infoDeportes: self.item)}){
+                                    Text("\(item):30")
+                                        .padding()
+                                        .padding(.horizontal, 10)
+                                        .background(.white)
+                                        .border(.gray)
+                                        
+                                }
+                            }
+                            .tint(.black)
+                        }
+                        .padding()
                     }
-                    .padding(.horizontal)
-                    .foregroundStyle(.white)
-                    HStack(){
-                        Text(item[1])
-                        Spacer()
-                        Text("MX$\(item[2])")
-                    }
-                    .font(.title)
-                    .foregroundStyle(.white)
-                    .bold()
-                    .padding(.horizontal)
-                    .padding(.bottom, 15)
-                    
-                }
+                    .background(.white)
             }
-            .frame(minWidth: 400, minHeight: 250)
-            ScrollView(.horizontal){
-                HStack(spacing: 15){
-                    ForEach(counter, id:\.self){item in
-                        Text("\(item):00")
-                            .padding()
-                            .padding(.horizontal, 10)
-                            .background(.white)
-                            .border(.gray)
-                        Text("\(item):30")
-                            .padding()
-                            .padding(.horizontal, 10)
-                            .background(.white)
-                            .border(.gray)
-                    }
-                }
-                .padding()
-            }
-            .background(.white)
         }
+    }
+}
+
+struct AllSpots: View {
+    var infoDeportes: [[String]]
+    var body: some View {
+        ScrollView(.vertical){
+            VStack(spacing: 20) {
+                ForEach(infoDeportes, id: \.self){item in
+                    Spot(item: item)
+                }
+            }
+            .padding(.top, 20)
+        }
+        .frame(minWidth: 400)
+        .background(.gray.opacity(0.3))
+    }
+}
+
+struct SpotEspecifico: View {
+    @Environment(\.dismiss) var dismiss
+    var infoDeportes: [String]
+    var body: some View {
+        ZStack{
+         Image(systemName: "arrow.backward")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20)
+                .foregroundStyle(.red)
+                .padding()
+                .background(content:{
+                    Circle()
+                        .fill(.white)
+                })
+                .opacity(0.8)
+        }
+        .navigationBarBackButtonHidden(true)
+        .background(.blue)
+        Text("Cosa")
     }
 }
 
