@@ -142,13 +142,28 @@ struct ContentView: View {
                                 NavigationLink(destination: Reserva(), label: { // OJO, SOLO ESTE ES UN NAVIGATION LINK, LOS DEMÁS SON BOTONES.
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: 170, height: 120)
+                                            .frame(width: 170, height: 220)
                                             .foregroundColor(.white)
                                             .padding(1)
                                             .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                                            .offset(y: 100)
                                             .overlay{
                                                 VStack{
+                                                    Image("1")
+                                                        .resizable()
+                                                        .scaledToFill()
+                                                        .frame(width: 160, height: 90)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                        .padding(.top,5)
+                                                        .overlay{
+                                                            RoundedRectangle(cornerRadius: 10)
+                                                                .foregroundColor(.black)
+                                                                .frame(width: 50, height: 50)
+                                                                .overlay{
+                                                                    Image(systemName: "magnifyingglass")
+                                                                        .foregroundStyle(.white)
+                                                                }
+                                                                .offset(x:-50,y:15)
+                                                        }
                                                     Text("Reserva una cancha")
                                                         .bold()
                                                         .font(.title3)
@@ -157,36 +172,35 @@ struct ContentView: View {
                                                         .foregroundStyle(.black)
                                                         .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
                                                     Spacer()
-                                                }.offset(y: 120)
-                                            }
-                                        Image("1")
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 170, height: 100)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                            .padding(1)
-                                            .shadow(radius: 10)
-                                            .overlay{
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .foregroundColor(.black)
-                                                    .frame(width: 50, height: 50)
-                                                    .overlay{
-                                                        Image(systemName: "magnifyingglass")
-                                                            .foregroundStyle(.white)
-                                                    }.offset(x: -50, y: 15)
+                                                }
                                             }
                                     }
                                 })
                                 Button(action:{}){
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: 170, height: 120)
+                                            .frame(width: 170, height: 220)
                                             .foregroundColor(.white)
                                             .padding(1)
                                             .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                                            .offset(y: 100)
                                             .overlay{
                                                 VStack{
+                                                    Image("2")
+                                                        .resizable()
+                                                        .scaledToFill()
+                                                        .frame(width: 160, height: 90)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                        .padding(.top,5)
+                                                        .overlay{
+                                                            RoundedRectangle(cornerRadius: 10)
+                                                                .foregroundColor(.black)
+                                                                .frame(width: 50, height: 50)
+                                                                .overlay{
+                                                                    Image(systemName: "baseball")
+                                                                        .foregroundStyle(.white)
+                                                                }
+                                                                .offset(x:-50,y:15)
+                                                        }
                                                     Text("Unete a un partido abierto")
                                                         .bold()
                                                         .font(.title3)
@@ -195,24 +209,7 @@ struct ContentView: View {
                                                         .foregroundStyle(.black)
                                                         .padding(.init(top: 0, leading: 5, bottom: 0, trailing: 5))
                                                     Spacer()
-                                                }.offset(y: 120)
-                                            }
-                                        Image("2")
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 170, height: 100)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                            .padding(1)
-                                            .shadow(radius: 10)
-                                            .overlay{
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .foregroundColor(.black)
-                                                    .frame(width: 50, height: 50)
-                                                    .overlay{
-                                                        Image(systemName: "baseball")
-                                                            .foregroundStyle(.white)
-                                                        
-                                                    }.offset(x: -50, y: 15)
+                                                }
                                             }
                                     }
                                 } //Boton Unirse
@@ -223,7 +220,6 @@ struct ContentView: View {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 170, height: 120)
                                             .foregroundColor(.white)
-                                            .padding(.init(top: 120, leading: 1, bottom: 1, trailing: 1))
                                             .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
                                             .overlay{
                                                 VStack{
@@ -239,7 +235,8 @@ struct ContentView: View {
                                                         .font(.title3)
                                                         .foregroundStyle(.black)
                                                     Spacer()
-                                                }.padding(.top,140)
+                                                }
+                                                .padding(.top,20)
                                             }
                                         
                                     }
@@ -249,7 +246,6 @@ struct ContentView: View {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 170, height: 120)
                                             .foregroundColor(.white)
-                                            .padding(.init(top: 120, leading: 1, bottom: 1, trailing: 1))
                                             .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
                                             .overlay{
                                                 VStack{
@@ -265,7 +261,8 @@ struct ContentView: View {
                                                         .font(.title3)
                                                         .foregroundStyle(.black)
                                                     Spacer()
-                                                }.padding(.top,140)
+                                                }
+                                                .padding(.top,20)
                                             }
                                         
                                     }
