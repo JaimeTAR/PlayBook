@@ -176,7 +176,7 @@ struct ContentView: View {
                                             }
                                     }
                                 })
-                                Button(action:{}){
+                                NavigationLink(destination: PartidoPublico(), label:{
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 170, height: 220)
@@ -212,7 +212,7 @@ struct ContentView: View {
                                                 }
                                             }
                                     }
-                                } //Boton Unirse
+                                }) //Boton Unirse
                             }
                             HStack{
                                 Button(action:{}){
@@ -543,6 +543,508 @@ struct Reserva: View {
             Spacer()
             
             AllSpots(infoDeportes: todo[deporte]!)
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+struct PartidoPublico: View {
+    @Environment(\.dismiss) var dismiss
+    @State private var ubicacion: String = ""
+    @State private var deporte: String = "Pádel"
+    @State private var date = Date()
+    
+    let deportes = ["Pádel", "Tennis", "Fútbol", "Basquetbol"]
+    
+    @State var todo =
+    ["Pádel" : [
+        ["padel1","Puntaco", "550"],
+        ["padel2","Padel & Pickle GM Bugambilias", "320"],
+        ["padel3","Padel Factory Sur", "380"],
+        ["padel4","Padel Spot Network", "390"]
+               ],
+     "Tennis" :[
+        ["tennis1","Cancha 1", "120"],
+        ["tennis2","Cancha 2", "150"],
+        ["tennis3","Cancha 3", "130"],
+        ["tennis4","Cancha 4", "180"]
+               ],
+     "Basquetbol" :[
+        ["basquet1","Cancha 1", "800"],
+        ["basquet2","Cancha 2", "920"],
+        ["basquet3","Cancha 3", "720"],
+        ["basquet4","Cancha 4", "800"]
+                   ],
+     "Fútbol" :[
+        ["fut1","Cancha 1", "1300"],
+        ["fut2","Cancha 2", "1290"],
+        ["fut3","Cancha 3", "999"],
+        ["fut4","Cancha 4", "1520"]
+               ]
+    ]
+    
+    var body: some View {
+        VStack(spacing: 0){
+            VStack(spacing: 0){
+                VStack{
+                    ZStack{
+                        HStack {
+                            Button(action:{
+                                dismiss()
+                            }){
+                                Image(systemName: "chevron.backward")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width:10)
+                                    .tint(.black)
+                            }
+                            .padding(.horizontal)
+                            Spacer()
+                        }
+                        Text("Partidos")
+                            .bold()
+                            .font(.title)
+                    }
+                    Divider()
+                        .frame(width: 600)
+                }
+                HStack(spacing: 20){
+                    Image(systemName: "slider.horizontal.3")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                    Picker("Deporte", selection: $deporte){
+                        ForEach(deportes, id:\.self){item in
+                            Text("\(item)")
+                        }
+                    }
+                    .frame(minWidth: 150)
+                    .tint(.black)
+                    .background(content:{
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(.gray.opacity(0.15))
+                    })
+                    DatePicker("",
+                               selection: $date,
+                               in: Date()...,
+                               displayedComponents: [.date]
+                    )
+                    .frame(maxHeight: .zero)
+                    .labelsHidden()
+                    .accentColor(.black)
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.vertical)
+                ScrollView(.vertical){
+                    VStack{
+                        Divider()
+                            .frame(width:600)
+                        Text("Para tu nivel")
+                            .bold()
+                            .font(.system(size: 20))
+                            .frame(alignment: .leading)
+                        Text("Estos partidos reflejan exactamente tu nivel")
+                            .foregroundColor(.gray)
+                        Text("fecha y clubs buscados")
+                            .foregroundColor(.gray)
+                        if deporte == "Pádel" {
+                            NavigationLink(destination: Text("Checkout"), label: { // OJO, SOLO ESTE ES UN NAVIGATION LINK, LOS DEMÁS SON BOTONES.
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 360, height: 290)
+                                        .foregroundColor(.white)
+                                        .padding(1)
+                                        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                                        .overlay{
+                                            VStack{
+                                                HStack{
+                                                    Text("miércoles 03 | 7:00 pm")
+                                                        .foregroundColor(.black)
+                                                        .font(.system(size: 15))
+                                                    Image(systemName: "checkmark.circle.fill")
+                                                        .foregroundColor(.green)
+                                                    Text("Cancha reservada")
+                                                        .foregroundColor(.black)
+                                                        .font(.system(size: 15))
+                                                }
+                                                HStack{
+                                                    Image("logo")
+                                                        .resizable()
+                                                        .frame(width:25,height: 25)
+                                                    Text("9km · Puntaco")
+                                                        .foregroundColor(.black)
+                                                }
+                                                HStack(spacing:25){
+                                                    VStack{
+                                                        Image(systemName: "person.crop.circle.fill")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Arturo")
+                                                            .foregroundColor(.black)
+                                                        Text("2.25")
+                                                            .foregroundColor(.black)
+                                                    }
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    Rectangle()
+                                                        .fill(Color.gray)
+                                                        .frame(width: 1,height: 100)
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                }
+                                                Divider()
+                                                    .frame(width:360)
+                                                    .padding(.bottom)
+                                                HStack{
+                                                    Text("Competitivo")
+                                                        .foregroundColor(.black)
+                                                    Text("· Nivel 2.2 - 3.2")
+                                                        .foregroundColor(.gray)
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .frame(width:100,height:60)
+                                                        .overlay{
+                                                            VStack{
+                                                                Text("$220")
+                                                                    .foregroundColor(.white)
+                                                                Text("90min")
+                                                                    .foregroundColor(.white)
+                                                            }
+                                                        }
+                                                }
+                                            }
+                                        }
+                                }
+                            })
+                        }
+                        if deporte == "Tennis" {
+                            NavigationLink(destination: Text("Checkout"), label: { // OJO, SOLO ESTE ES UN NAVIGATION LINK, LOS DEMÁS SON BOTONES.
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 360, height: 290)
+                                        .foregroundColor(.white)
+                                        .padding(1)
+                                        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                                        .overlay{
+                                            VStack{
+                                                HStack{
+                                                    Text("miércoles 03 | 7:00 am")
+                                                        .foregroundColor(.black)
+                                                        .font(.system(size: 15))
+                                                    Image(systemName: "checkmark.circle.fill")
+                                                        .foregroundColor(.green)
+                                                    Text("Cancha reservada")
+                                                        .foregroundColor(.black)
+                                                        .font(.system(size: 15))
+                                                }
+                                                HStack{
+                                                    Image("logo")
+                                                        .resizable()
+                                                        .frame(width:25,height: 25)
+                                                    Text("3km · CODE Metropolitano")
+                                                        .foregroundColor(.black)
+                                                }
+                                                HStack(spacing:25){
+                                                    VStack{
+                                                        Image(systemName: "person.crop.circle.fill")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Jaime")
+                                                            .foregroundColor(.black)
+                                                        Text("2.00")
+                                                            .foregroundColor(.black)
+                                                    }
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    Rectangle()
+                                                        .fill(Color.gray)
+                                                        .frame(width: 1,height: 100)
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                }
+                                                Divider()
+                                                    .frame(width:360)
+                                                    .padding(.bottom)
+                                                HStack{
+                                                    Text("Competitivo")
+                                                        .foregroundColor(.black)
+                                                    Text("· Nivel 1.76 - 2.76")
+                                                        .foregroundColor(.gray)
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .frame(width:100,height:60)
+                                                        .overlay{
+                                                            VStack{
+                                                                Text("$80")
+                                                                    .foregroundColor(.white)
+                                                                Text("60min")
+                                                                    .foregroundColor(.white)
+                                                            }
+                                                        }
+                                                }
+                                            }
+                                        }
+                                }
+                            })
+                        }
+                        if deporte == "Basquetbol" {
+                            NavigationLink(destination: Text("Checkout"), label: { // OJO, SOLO ESTE ES UN NAVIGATION LINK, LOS DEMÁS SON BOTONES.
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 360, height: 290)
+                                        .foregroundColor(.white)
+                                        .padding(1)
+                                        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                                        .overlay{
+                                            VStack{
+                                                HStack{
+                                                    Text("jueves 04 | 5:00 pm")
+                                                        .foregroundColor(.black)
+                                                        .font(.system(size: 15))
+                                                    Image(systemName: "checkmark.circle.fill")
+                                                        .foregroundColor(.green)
+                                                    Text("Cancha reservada")
+                                                        .foregroundColor(.black)
+                                                        .font(.system(size: 15))
+                                                }
+                                                HStack{
+                                                    Image("logo")
+                                                        .resizable()
+                                                        .frame(width:25,height: 25)
+                                                    Text("11km · Newland")
+                                                        .foregroundColor(.black)
+                                                }
+                                                HStack(spacing:25){
+                                                    VStack{
+                                                        Image(systemName: "person.crop.circle.fill")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Teo")
+                                                            .foregroundColor(.black)
+                                                        Text("1.67")
+                                                            .foregroundColor(.black)
+                                                    }
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    Rectangle()
+                                                        .fill(Color.gray)
+                                                        .frame(width: 1,height: 100)
+                                                    VStack{
+                                                        Image(systemName: "person.crop.circle.fill")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Arturo")
+                                                            .foregroundColor(.black)
+                                                        Text("2.00")
+                                                            .foregroundColor(.black)
+                                                    }
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                }
+                                                Divider()
+                                                    .frame(width:360)
+                                                    .padding(.bottom)
+                                                HStack{
+                                                    Text("Competitivo")
+                                                        .foregroundColor(.black)
+                                                    Text("· Nivel 1.50 - 2.50")
+                                                        .foregroundColor(.gray)
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .frame(width:100,height:60)
+                                                        .overlay{
+                                                            VStack{
+                                                                Text("$80")
+                                                                    .foregroundColor(.white)
+                                                                Text("60min")
+                                                                    .foregroundColor(.white)
+                                                            }
+                                                        }
+                                                }
+                                            }
+                                        }
+                                }
+                            })
+                        }
+                        if deporte == "Fútbol" {
+                            NavigationLink(destination:Text("Checkout"), label: { // OJO, SOLO ESTE ES UN NAVIGATION LINK, LOS DEMÁS SON BOTONES.
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 360, height: 290)
+                                        .foregroundColor(.white)
+                                        .padding(1)
+                                        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                                        .overlay{
+                                            VStack{
+                                                HStack{
+                                                    Text("viernes 05 | 7:00 pm")
+                                                        .foregroundColor(.black)
+                                                        .font(.system(size: 15))
+                                                    Image(systemName: "checkmark.circle.fill")
+                                                        .foregroundColor(.green)
+                                                    Text("Cancha reservada")
+                                                        .foregroundColor(.black)
+                                                        .font(.system(size: 15))
+                                                }
+                                                HStack{
+                                                    Image("logo")
+                                                        .resizable()
+                                                        .frame(width:25,height: 25)
+                                                    Text("3km · CODE Metropolitano")
+                                                        .foregroundColor(.black)
+                                                }
+                                                HStack(spacing:25){
+                                                    VStack{
+                                                        Image(systemName: "person.crop.circle.fill")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Javier")
+                                                            .foregroundColor(.black)
+                                                        Text("2.15")
+                                                            .foregroundColor(.black)
+                                                    }
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    Rectangle()
+                                                        .fill(Color.gray)
+                                                        .frame(width: 1,height: 100)
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    VStack{
+                                                        Image(systemName: "plus.circle")
+                                                            .resizable()
+                                                            .foregroundColor(.black)
+                                                            .frame(width:50,height:50)
+                                                        Text("Libre")
+                                                            .foregroundColor(.black)
+                                                        Text("0")
+                                                            .foregroundColor(.white)
+                                                    }
+                                                }
+                                                Divider()
+                                                    .frame(width:360)
+                                                    .padding(.bottom)
+                                                HStack{
+                                                    Text("Competitivo")
+                                                        .foregroundColor(.black)
+                                                    Text("· Nivel 2.10 - 3.10")
+                                                        .foregroundColor(.gray)
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .frame(width:100,height:60)
+                                                        .overlay{
+                                                            VStack{
+                                                                Text("$50")
+                                                                    .foregroundColor(.white)
+                                                                Text("60min")
+                                                                    .foregroundColor(.white)
+                                                            }
+                                                        }
+                                                }
+                                            }
+                                        }
+                                }
+                            })
+                        }
+                        Divider()
+                            .padding()
+                            .frame(width:600)
+                        Text("¡Se el primer jugador!")
+                            .bold()
+                        Text("Crea un nuevo partido seleccionando la")
+                            .foregroundColor(.gray)
+                        Text("hora que desees")
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
+            Spacer()
+            
         }
         .navigationBarBackButtonHidden(true)
     }
