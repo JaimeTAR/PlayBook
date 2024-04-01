@@ -2402,163 +2402,170 @@ struct CheckOut: View {
     var infoReservacion:[String]
     var share: Int
     var body: some View {
-        VStack{
-            HStack{
-                Text("Checkout")
-                    .bold()
-                    .font(.title)
-                Spacer()
-                Button(action:{dismiss()}){
-                    Image(systemName: "xmark")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20)
-                }
-                .tint(.black)
-            }
-            .padding()
-            .padding(.horizontal, 10)
-            .padding(.top,50)
-            Rectangle()
-                .fill(LinearGradient(gradient: Gradient(colors: [.black.opacity(0.1), .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .black.opacity(0.1)]), startPoint: .top, endPoint: .bottom))
-                .overlay(content:{
-                    VStack{
-                        VStack(alignment:.leading){
-                            HStack{
-                                VStack(alignment: .leading){
-                                    Text("\(dias[Int(infoReservacion[0])! - 1]) ") +
-                                    Text(String(infoReservacion[0]).count == 1 ? "0\(infoReservacion[0])" : "\(infoReservacion[0])") +
-                                    Text(" de Abril")
-                                    Text("Cancha \(infoReservacion[2])")
-                                        .padding(.top, 1)
-                                    Text("\(infoPlace[1])")
-                                }
-                                .padding(.leading, 10)
-                                Spacer()
-                                Divider()
-                                    .frame(maxWidth: 2)
-                                    .background(.gray)
-                                Spacer()
-                                VStack{
-                                    Image(systemName: "clock")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 35)
-                                    Text("\(infoReservacion[4]) min")
-                                }
-                                .padding(.trailing, 10)
-                            }
-                            Divider()
-                                .frame(maxHeight: 2)
-                                .background(.gray)
-                            HStack{
-                                Toggle(isOn: $pay1) {
-                                    HStack{
-                                        ZStack(alignment: .bottomLeading){
-                                            Image(systemName: "creditcard")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 50)
-                                                .padding(.init(top: 0, leading: 5, bottom: 8, trailing: 0))
-                                            Text("x1")
-                                                .font(.system(size:18))
-                                                .foregroundStyle(.white)
-                                                .padding(4)
-                                                .background(content:{
-                                                    Circle()
-                                                })
-                                        }
-                                        Text("Paga tu parte")
-                                            .bold()
-                                        Spacer()
-                                        Text("MX$\(share)")
-                                            .bold()
-                                    }
-                                }
-                                .toggleStyle(iOSCheckboxToggleStyle())
-                                .tint(.black)
-                            }
-                            .padding(.vertical)
-                            .onChange(of: pay1) {
-                                if pay1 {
-                                    pay2 = false
-                                }
-                            }
-                            HStack{
-                                Toggle(isOn: $pay2) {
-                                    HStack{
-                                        ZStack(alignment: .bottomLeading){
-                                            Image(systemName: "creditcard")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 50)
-                                                .padding(.init(top: 0, leading: 5, bottom: 8, trailing: 0))
-                                            Text("x4")
-                                                .font(.system(size:16))
-                                                .foregroundStyle(.white)
-                                                .padding(4)
-                                                .background(content:{
-                                                    Circle()
-                                                })
-                                        }
-                                        Text("Paga completo")
-                                            .bold()
-                                        Spacer()
-                                        Text("MX$\(infoReservacion[3])")
-                                            .bold()
-                                    }
-                                }
-                                .toggleStyle(iOSCheckboxToggleStyle())
-                                .tint(.black)
-                                .onChange(of: pay2) {
-                                    if pay2 {
-                                        pay1 = false
-                                    }
-                                }
-                            }
-                            .padding(.vertical)
-                        }
-                        .frame(maxWidth: 300, maxHeight: 350)
-                        .padding()
-                        .background(.white)
-                        .cornerRadius(7)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 7)
-                                .stroke(.gray, lineWidth: 2)
-                        )
-                        .padding()
-                        HStack{
-                            Text("Subtotal")
-                                .bold()
-                            Spacer()
-                            Text(pay1 ? "MX$\(share).00" : "MX$\(infoReservacion[3]).00")
-                                .foregroundStyle(.blue)
-                        }
-                        .font(.title)
-                        .padding()
-                        .padding(.top)
-                    }
-                })
-            
-            Rectangle()
-                .fill(.white)
-                .frame(maxHeight: 100)
-                .overlay(content:{
-                    Text("Confirmar")
-                        .font(.title)
+        NavigationStack {
+            VStack{
+                HStack{
+                    Text("Checkout")
                         .bold()
-                        .foregroundStyle(.white)
-                        .padding()
-                        .padding(.horizontal,80)
-                        .background(content:{
-                            Capsule()
-                                .fill(.black)
-                        })
-                })
+                        .font(.title)
+                    Spacer()
+                    Button(action:{dismiss()}){
+                        Image(systemName: "xmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20)
+                    }
+                    .tint(.black)
+                }
+                .padding()
+                .padding(.horizontal, 10)
+                .padding(.top,50)
+                Rectangle()
+                    .fill(LinearGradient(gradient: Gradient(colors: [.black.opacity(0.1), .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .black.opacity(0.1)]), startPoint: .top, endPoint: .bottom))
+                    .overlay(content:{
+                        VStack{
+                            VStack(alignment:.leading){
+                                HStack{
+                                    VStack(alignment: .leading){
+                                        Text("\(dias[Int(infoReservacion[0])! - 1]) ") +
+                                        Text(String(infoReservacion[0]).count == 1 ? "0\(infoReservacion[0])" : "\(infoReservacion[0])") +
+                                        Text(" de Abril")
+                                        Text("Cancha \(infoReservacion[2])")
+                                            .padding(.top, 1)
+                                        Text("\(infoPlace[1])")
+                                    }
+                                    .padding(.leading, 10)
+                                    Spacer()
+                                    Divider()
+                                        .frame(maxWidth: 2)
+                                        .background(.gray)
+                                    Spacer()
+                                    VStack{
+                                        Image(systemName: "clock")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 35)
+                                        Text("\(infoReservacion[4]) min")
+                                    }
+                                    .padding(.trailing, 10)
+                                }
+                                Divider()
+                                    .frame(maxHeight: 2)
+                                    .background(.gray)
+                                HStack{
+                                    Toggle(isOn: $pay1) {
+                                        HStack{
+                                            ZStack(alignment: .bottomLeading){
+                                                Image(systemName: "creditcard")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 50)
+                                                    .padding(.init(top: 0, leading: 5, bottom: 8, trailing: 0))
+                                                Text("x1")
+                                                    .font(.system(size:18))
+                                                    .foregroundStyle(.white)
+                                                    .padding(4)
+                                                    .background(content:{
+                                                        Circle()
+                                                    })
+                                            }
+                                            Text("Paga tu parte")
+                                                .bold()
+                                            Spacer()
+                                            Text("MX$\(share)")
+                                                .bold()
+                                        }
+                                    }
+                                    .toggleStyle(iOSCheckboxToggleStyle())
+                                    .tint(.black)
+                                }
+                                .padding(.vertical)
+                                .onChange(of: pay1) {
+                                    if pay1 {
+                                        pay2 = false
+                                    }
+                                }
+                                HStack{
+                                    Toggle(isOn: $pay2) {
+                                        HStack{
+                                            ZStack(alignment: .bottomLeading){
+                                                Image(systemName: "creditcard")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 50)
+                                                    .padding(.init(top: 0, leading: 5, bottom: 8, trailing: 0))
+                                                Text("x4")
+                                                    .font(.system(size:16))
+                                                    .foregroundStyle(.white)
+                                                    .padding(4)
+                                                    .background(content:{
+                                                        Circle()
+                                                    })
+                                            }
+                                            Text("Paga completo")
+                                                .bold()
+                                            Spacer()
+                                            Text("MX$\(infoReservacion[3])")
+                                                .bold()
+                                        }
+                                    }
+                                    .toggleStyle(iOSCheckboxToggleStyle())
+                                    .tint(.black)
+                                    .onChange(of: pay2) {
+                                        if pay2 {
+                                            pay1 = false
+                                        }
+                                    }
+                                }
+                                .padding(.vertical)
+                            }
+                            .frame(maxWidth: 300, maxHeight: 350)
+                            .padding()
+                            .background(.white)
+                            .cornerRadius(7)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .stroke(.gray, lineWidth: 2)
+                            )
+                            .padding()
+                            HStack{
+                                Text("Subtotal")
+                                    .bold()
+                                Spacer()
+                                Text(pay1 ? "MX$\(share).00" : "MX$\(infoReservacion[3]).00")
+                                    .foregroundStyle(.blue)
+                            }
+                            .font(.title)
+                            .padding()
+                            .padding(.top)
+                        }
+                    })
                 
-        }
-        .ignoresSafeArea()
+                Rectangle()
+                    .fill(.white)
+                    .frame(maxHeight: 100)
+                    .overlay(content:{
+                        NavigationLink(destination:{
+                            ContentView()
+                                .navigationBarBackButtonHidden(true)
+                        }){
+                            Text("Confirmar")
+                                .font(.title)
+                                .bold()
+                                .foregroundStyle(.white)
+                                .padding()
+                                .padding(.horizontal,80)
+                                .background(content:{
+                                    Capsule()
+                                        .fill(.black)
+                                })
+                        }
+                    })
+                    
+            }
+            .ignoresSafeArea()
         .navigationBarBackButtonHidden(true)
+        }
     }
 }
 
