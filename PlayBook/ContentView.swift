@@ -1054,13 +1054,13 @@ struct Spot: View {
     
     var item:[String]
     
-    let counter = 12...21
+    let counter = 12...23
     @State var icon:String = "heart"
     
     var body: some View {
         NavigationStack{
                 VStack(spacing: 0) {
-                    NavigationLink(destination: {SpotEspecifico(infoDeportes: item)}){
+                    NavigationLink(destination: {SpotEspecifico(infoDeportes: item, horaSeleccionada: "12:00")}){
                         ZStack{
                             Image(item[0])
                                 .resizable()
@@ -1114,14 +1114,14 @@ struct Spot: View {
                     ScrollView(.horizontal){
                         HStack(spacing: 15){
                             ForEach(counter, id:\.self){item in
-                                NavigationLink(destination: {SpotEspecifico(infoDeportes: self.item)}){
+                                NavigationLink(destination: {SpotEspecifico(infoDeportes: self.item, horaSeleccionada: "\(item):00")}){
                                     Text("\(item):00")
                                         .padding()
                                         .padding(.horizontal, 10)
                                         .background(.white)
                                         .border(.gray)
                                 }
-                                NavigationLink(destination: {SpotEspecifico(infoDeportes: self.item)}){
+                                NavigationLink(destination: {SpotEspecifico(infoDeportes: self.item, horaSeleccionada: "\(item):30")}){
                                     Text("\(item):30")
                                         .padding()
                                         .padding(.horizontal, 10)
@@ -1158,24 +1158,397 @@ struct AllSpots: View {
 
 struct SpotEspecifico: View {
     @Environment(\.dismiss) var dismiss
+    let columns = [GridItem(.flexible()),
+                   GridItem(.flexible()),
+                   GridItem(.flexible()),
+                   GridItem(.flexible())]
+   
+    var multiPrecios = [1.0, 1.5, 2.0, 2.5]
+    var canchas = 1...4
+    var dias = ["LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM", "LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM"]
+    var horas = ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00"]
+    var nums = 0...12
+    @State var selec = 0
     var infoDeportes: [String]
+    @State var horaSeleccionada:String
     var body: some View {
-        ZStack{
-         Image(systemName: "arrow.backward")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 20)
-                .foregroundStyle(.red)
-                .padding()
-                .background(content:{
-                    Circle()
-                        .fill(.white)
-                })
-                .opacity(0.8)
+        NavigationStack {
+            VStack(spacing: 0){
+                ZStack{
+                    Image(infoDeportes[0])
+                        .resizable()
+                        .frame(minWidth: 400)
+                        .scaledToFit()
+                        .overlay(content: {
+                            VStack{
+                                HStack{
+                                    Button(action:{dismiss()}){
+                                        Image(systemName: "arrow.backward")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 20)
+                                            .foregroundStyle(.black)
+                                            .padding()
+                                            .background(content:{
+                                                Circle()
+                                                    .fill(.white)
+                                            })
+                                        }
+                                    Spacer()
+                                    Button(action:{dismiss()}){
+                                        Image(systemName: "square.and.arrow.up")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 20)
+                                            .foregroundStyle(.black)
+                                            .padding()
+                                            .background(content:{
+                                                Circle()
+                                                    .fill(.white)
+                                            })
+                                        }
+                                }
+                                .opacity(0.9)
+                                .padding(.horizontal)
+                                Spacer()
+                            }
+                            .padding(.top, 45)
+                        })
+                }
+                .frame(width: 400, height: 180)
+                .background(.red)
+               Rectangle()
+                    .fill(.white)
+                    .overlay(content:{
+                        VStack(spacing: 0){
+                            HStack{
+                                VStack(alignment: .leading){
+                                    Text("\(infoDeportes[1])")
+                                        .font(.title)
+                                        .bold()
+                                    Text("Dirección")
+                                        
+                                }
+                                Spacer()
+                                Image(systemName: "heart")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30)
+                                
+                            }
+                            .padding()
+                            Text("Reservar")
+                                .font(.title)
+                                .bold()
+                            Divider()
+                                .frame(minHeight: 2)
+                                .background(.black)
+                                .padding(.top)
+                            ScrollView(.vertical){
+                                VStack(alignment:.leading, spacing: 0){
+                                    Text("Fecha")
+                                        .bold()
+                                        .font(.title)
+                                        .padding(.leading)
+                                    Text("Selecciona la fecha de tu reserva")
+                                        .padding(.leading)
+                                        .foregroundStyle(.gray)
+                                    ScrollView(.horizontal){
+                                        HStack(spacing: 20){
+                                            ForEach(nums, id:\.self){ cosa in
+                                                Button(action:{
+                                                    selec = cosa
+                                                }){
+                                                    VStack(spacing:0){
+                                                        Text("\(dias[cosa])")
+                                                            .font(.title)
+                                                        Text(String(cosa + 1).count == 1 ? "0\(cosa + 1)" : "\(cosa + 1)")
+                                                            .padding()
+                                                            .bold()
+                                                            .foregroundStyle(cosa == selec ? .white : .gray)
+                                                            .background(content:{
+                                                                Circle()
+                                                                    .fill(cosa == selec ? .black : .clear)
+                                                            })
+                                                        Text("Abril")
+                                                    }
+                                                    .tint(cosa == selec ? .black : .gray)
+                                                }
+                                               
+                                            }
+                                        }
+                                    }
+                                    .padding()
+                                    Text("Hora")
+                                        .bold()
+                                        .font(.title)
+                                        .padding(.leading)
+                                    Text("Selecciona la hora de tu reserva")
+                                        .padding(.leading)
+                                        .foregroundStyle(.gray)
+                                    LazyVGrid(columns: columns, content: {
+                                        ForEach(horas, id:\.self){hora in
+                                            Button(action:{
+                                                horaSeleccionada = hora
+                                            }){
+                                                Text("\(hora)")
+                                                    .padding()
+                                                    .bold()
+                                                    .foregroundStyle(hora == horaSeleccionada ? .white : .black)
+                                                    .background(hora == horaSeleccionada ? .black : .white)
+                                                    .cornerRadius(7)
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 7)
+                                                            .stroke(.gray, lineWidth: 1)
+                                                    )
+                                            }
+                                            .tint(.black)
+                                        }
+                                    })
+                                    .padding(.vertical)
+                                    Text("Cancha")
+                                        .bold()
+                                        .font(.title)
+                                        .padding(.leading)
+                                    Text("Selecciona tu cancha")
+                                        .padding(.leading)
+                                        .foregroundStyle(.gray)
+                                    VStack{
+                                        ForEach(canchas, id:\.self){cancha in
+                                            VStack(alignment: .leading){
+                                                Text("Cancha \(cancha)")
+                                                    .bold()
+                                                    .font(.system(size: 20))
+                                                ScrollView(.horizontal){
+                                                    HStack{
+                                                        ForEach(multiPrecios, id:\.self){mult in
+                                                            NavigationLink(destination:{
+                                                                CheckOut(infoPlace: infoDeportes, infoReservacion: ["\(selec + 1)", "\(horaSeleccionada)", "\(cancha)", "\(Int(Double(infoDeportes[2])! * mult))", "\(Int(60 * mult))"], share: Int(Double(infoDeportes[2])! / 4)
+                                                                         )}){
+                                                                VStack{
+                                                                    Text("MX$\(Int(Double(infoDeportes[2])! * mult))")
+                                                                        .bold()
+                                                                        .font(.system(size: 25))
+                                                                    Text("\(Int(60 * mult)) min")
+                                                                }
+                                                                .foregroundStyle(.white)
+                                                                .frame(minWidth: 100, minHeight: 50)
+                                                                .padding()
+                                                                .background(content:{
+                                                                    RoundedRectangle(cornerRadius: 10)
+                                                                        .fill(.cyan)
+                                                                })
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            Divider()
+                                                .padding(.vertical, 5)
+                                        }
+                                    }
+                                    .padding()
+                                }
+                                .padding()
+                            }
+                            .background(.gray.opacity(0.15))
+                        }
+                    })
+            }
+            .ignoresSafeArea()
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
-        .background(.blue)
-        Text("Cosa")
     }
 }
 
+struct ContentView_Previews: PreviewProvider{
+    static var previews: some View{
+        CheckOut(infoPlace: ["padel1","Puntaco", "550"], infoReservacion: ["3", "12:00", "2", "825", "90"], share: 125)
+    }
+}
+
+struct CheckOut: View {
+    @Environment(\.dismiss) var dismiss
+    @State var pay1 = false
+    @State var pay2 = true
+    var dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+    var infoPlace:[String]
+    var infoReservacion:[String]
+    var share: Int
+    var body: some View {
+        VStack{
+            HStack{
+                Text("Checkout")
+                    .bold()
+                    .font(.title)
+                Spacer()
+                Button(action:{dismiss()}){
+                    Image(systemName: "xmark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20)
+                }
+                .tint(.black)
+            }
+            .padding()
+            .padding(.horizontal, 10)
+            .padding(.top,50)
+            Rectangle()
+                .fill(LinearGradient(gradient: Gradient(colors: [.black.opacity(0.1), .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .clear, .black.opacity(0.1)]), startPoint: .top, endPoint: .bottom))
+                .overlay(content:{
+                    VStack{
+                        VStack(alignment:.leading){
+                            HStack{
+                                VStack(alignment: .leading){
+                                    Text("\(dias[Int(infoReservacion[0])! - 1]) ") +
+                                    Text(String(infoReservacion[0]).count == 1 ? "0\(infoReservacion[0])" : "\(infoReservacion[0])") +
+                                    Text(" de Abril")
+                                    Text("Cancha \(infoReservacion[2])")
+                                        .padding(.top, 1)
+                                    Text("\(infoPlace[1])")
+                                }
+                                .padding(.leading, 10)
+                                Spacer()
+                                Divider()
+                                    .frame(maxWidth: 2)
+                                    .background(.gray)
+                                Spacer()
+                                VStack{
+                                    Image(systemName: "clock")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 35)
+                                    Text("\(infoReservacion[4]) min")
+                                }
+                                .padding(.trailing, 10)
+                            }
+                            Divider()
+                                .frame(maxHeight: 2)
+                                .background(.gray)
+                            HStack{
+                                Toggle(isOn: $pay1) {
+                                    HStack{
+                                        ZStack(alignment: .bottomLeading){
+                                            Image(systemName: "creditcard")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 50)
+                                                .padding(.init(top: 0, leading: 5, bottom: 8, trailing: 0))
+                                            Text("x1")
+                                                .font(.system(size:18))
+                                                .foregroundStyle(.white)
+                                                .padding(4)
+                                                .background(content:{
+                                                    Circle()
+                                                })
+                                        }
+                                        Text("Paga tu parte")
+                                            .bold()
+                                        Spacer()
+                                        Text("MX$\(share)")
+                                            .bold()
+                                    }
+                                }
+                                .toggleStyle(iOSCheckboxToggleStyle())
+                                .tint(.black)
+                            }
+                            .padding(.vertical)
+                            .onChange(of: pay1) {
+                                if pay1 {
+                                    pay2 = false
+                                }
+                            }
+                            HStack{
+                                Toggle(isOn: $pay2) {
+                                    HStack{
+                                        ZStack(alignment: .bottomLeading){
+                                            Image(systemName: "creditcard")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 50)
+                                                .padding(.init(top: 0, leading: 5, bottom: 8, trailing: 0))
+                                            Text("x4")
+                                                .font(.system(size:16))
+                                                .foregroundStyle(.white)
+                                                .padding(4)
+                                                .background(content:{
+                                                    Circle()
+                                                })
+                                        }
+                                        Text("Paga completo")
+                                            .bold()
+                                        Spacer()
+                                        Text("MX$\(infoReservacion[3])")
+                                            .bold()
+                                    }
+                                }
+                                .toggleStyle(iOSCheckboxToggleStyle())
+                                .tint(.black)
+                                .onChange(of: pay2) {
+                                    if pay2 {
+                                        pay1 = false
+                                    }
+                                }
+                            }
+                            .padding(.vertical)
+                        }
+                        .frame(maxWidth: 300, maxHeight: 350)
+                        .padding()
+                        .background(.white)
+                        .cornerRadius(7)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 7)
+                                .stroke(.gray, lineWidth: 2)
+                        )
+                        .padding()
+                        HStack{
+                            Text("Subtotal")
+                                .bold()
+                            Spacer()
+                            Text(pay1 ? "MX$\(share).00" : "MX$\(infoReservacion[3]).00")
+                                .foregroundStyle(.blue)
+                        }
+                        .font(.title)
+                        .padding()
+                        .padding(.top)
+                    }
+                })
+            
+            Rectangle()
+                .fill(.white)
+                .frame(maxHeight: 100)
+                .overlay(content:{
+                    Text("Confirmar")
+                        .font(.title)
+                        .bold()
+                        .foregroundStyle(.white)
+                        .padding()
+                        .padding(.horizontal,80)
+                        .background(content:{
+                            Capsule()
+                                .fill(.black)
+                        })
+                })
+                
+        }
+        .ignoresSafeArea()
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+struct iOSCheckboxToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+            Button(action: {
+                configuration.isOn.toggle()
+            }) {
+                HStack() {
+                Image(systemName: configuration.isOn ? "checkmark.circle" : "circle")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width:25)
+                    configuration.label
+            }
+            
+        }
+    }
+}
